@@ -18,7 +18,6 @@ const configuration = require('./webpack.config');
 // extract CSS imported by dynamically imported async routes
 // async loading / async chunking
 
-
 // Mapping loaded modules to bundles ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // In order to make sure that the client loads all the modules that were rendered server-side, 
 // we'll need to map them to the bundles that Webpack created.
@@ -71,7 +70,7 @@ configuration.module.rules.push(
         loader: 'css-loader',
         options: {
           modules: true,
-          // importLoaders: 2,
+          importLoaders: 2,
           sourceMap: true,
         }
       },
@@ -86,7 +85,7 @@ configuration.module.rules.push(
         options: {
           outputStyle: 'expanded',
           sourceMap: true,
-          // sourceMapContents: true
+          sourceMapContents: true
         }
       },
       {
@@ -124,7 +123,7 @@ configuration.optimization = {
       styles: {
         name: 'main',
         test: /\.(sa|sc|c)ss$/,
-        chunks: 'all', // initial
+        chunks: 'all',
         enforce: true,
       },
     },
@@ -217,7 +216,7 @@ configuration.plugins.push(
   new UglifyJsPlugin({
     cache: false,      // Enable file caching (default: false)
     parallel: true,   // Use multi-process parallel running to improve the build speed (default: false)
-    sourceMap: false, // Use source maps to map error message locations to modules (default: false)
+    sourceMap: true, // Use source maps to map error message locations to modules (default: false)
     extractComments: false, // Whether comments shall be extracted to a separate file (default: false)
     uglifyOptions: {
       ecma: 8, // Supported ECMAScript Version (default undefined)
@@ -227,8 +226,8 @@ configuration.plugins.push(
         passes: 1,  // The maximum number of times to run compress (default: 1)
       },
       output: {
-        beautify: true, // whether to actually beautify the output (default true)
-        comments: true, // true or "all" to preserve all comments, "some" to preserve some (default false)
+        beautify: false, // whether to actually beautify the output (default true)
+        comments: false, // true or "all" to preserve all comments, "some" to preserve some (default false)
       },
       ie8: false, // Enable IE8 Support (default false)
       safari10: false, // Enable work around Safari 10/11 bugs in loop scoping and await (default false)
@@ -250,7 +249,7 @@ configuration.plugins.push(
     filename: 'service-worker.js',
     maximumFileSizeToCacheInBytes: 8388608,
 
-    // Ensure all our static, local assets are cached.
+    // Ensure all static, local assets are cached
     staticFileGlobs: [path.dirname(configuration.output.path) + '/**/*.{js,html,css,png,jpg,gif,svg,eot,ttf,woff,woff2}'],
     stripPrefix: path.dirname(configuration.output.path),
 

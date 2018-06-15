@@ -88,14 +88,6 @@ mongoose.connect(dbURL, mongooseOptions, err => {
 
 // #########################################################################
 
-// GLOBAL constants ++++++++++++++++++++++++++++++++++++++++++++
-// global.__CLIENT__ = false;
-// global.__SERVER__ = true;
-// global.__DISABLE_SSR__ = false;
-// global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
-
-// #########################################################################
-
 dotenv.config();
 
 // #########################################################################
@@ -104,9 +96,6 @@ process.on('unhandledRejection', (error, promise) => {
   console.error('>>>>>> server > Unhandled Rejection at:', promise, 'reason:', error);
 });
 
-// #########################################################################
-// server-side bundle (settings.server.output file) is generated from settings.server.input
-// server-side bundle beow:
 // #########################################################################
 
 export default function (parameters) {
@@ -133,12 +122,12 @@ export default function (parameters) {
 
   app.use((req, res, next) => {
     console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.ip +++++++++: ', req.ip);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.method +++++: ', req.method);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.url ++++++++: ', req.url);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.headers ++++: ', req.headers);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.session ++++: ', req.session);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.params ++++: ', req.params);
+    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.ip +++++++++++++: ', req.ip);
+    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.method +++++++++: ', req.method);
+    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.url ++++++++++++: ', req.url);
+    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.headers ++++++++: ', req.headers);
+    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.session ++++++++: ', req.session);
+    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.params +++++++++: ', req.params);
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.originalUrl ++++: ', req.originalUrl);
     // console.log('>>>>>>>>>>>>>>>>> SERVER > process.env.SESSION_SECRET ++++: ', process.env.SESSION_SECRET);
     console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN < $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
@@ -147,8 +136,8 @@ export default function (parameters) {
 
   app.use(morgan('dev'));
   app.use(helmet());
-  app.use(cors());
-  //app.use(headers);
+  //app.use(cors());
+  app.use(headers);
 
   // #########################################################################
 
@@ -158,10 +147,13 @@ export default function (parameters) {
 
   // #########################################################################
 
+  app.use(bodyParser.json({ limit: '20mb' }));
+  app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
+  app.use(cookieParser());
   app.use(compression());
-  //app.use(favicon(path.join(__dirname, '../public/static/favicon', 'favicon.ico')));
-  // app.get('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
-  //app.use('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
+  app.use('/assets', express.static(path.join(__dirname, '../public/assets')));
+  app.use(favicon(path.join(__dirname, '../public/static/favicon', 'favicon.ico')));
+  app.use('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
 
   // #########################################################################
 
@@ -179,17 +171,10 @@ export default function (parameters) {
     );
   });
 
-  app.use('/assets', express.static(path.join(__dirname, '../public/assets')));
-
-
   // #########################################################################
   
   // saveUninitialized: false, // don't create session until something stored
   // resave: false, // don't save session if unmodified
-
-  app.use(bodyParser.json({ limit: '20mb' }));
-  app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
-  app.use(cookieParser());
 
   // app.use(/\/api/, session({
   app.use(session({
@@ -204,9 +189,7 @@ export default function (parameters) {
   }));
 
   app.use((req, res, next) => {
-    console.log('>>>>>>>>>>>>>>>> SERVER > REQ.headers ++++  111z: ', req.headers);
-    console.log('>>>>>>>>>>>>>>>> SERVER > REQ.session ++++  111z: ', req.session);
-    console.log('>>>>>>>>>>>>>>>> SERVER > REQ.cookies ++++  111z: ', req.cookies);
+    // console.log('>>>>>>>>>>>>>>>> SERVER > :');
     return next();
   });
 
@@ -228,8 +211,6 @@ export default function (parameters) {
 
     const chunks = parameters.chunks();
     // const chunks = {...parameters.chunks()};
-
-    console.log('>>>>>>>>>>>>>>>> SERVER > CHUNKS !!!!!!!!!: ', chunks);
 
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! START !! $$$$$$$$$$$$$$$$$$$$$$');
 
@@ -306,8 +287,8 @@ export default function (parameters) {
       const bundles = getBundles(getChunks(), modules);
 
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > CHUNKS: ', chunks);
-      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > MODULES: ', modules.length);
-      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > BUNDLES: ', bundles.length);
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > MODULES: ', modules);
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > BUNDLES: ', bundles);
       // console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > content: ', content);
       // console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > store: ', store);
 
