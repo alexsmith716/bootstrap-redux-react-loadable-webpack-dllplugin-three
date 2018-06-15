@@ -3,9 +3,6 @@ const settings = require('./universal-webpack-settings');
 const configuration = require('./webpack.config');
 const path = require('path');
 
-configuration.output.filename = '[name].js';
-configuration.output.chunkFilename = '[name].js';
-
 configuration.module.rules.push(
   {
     test: /\.(scss)$/,
@@ -17,7 +14,7 @@ configuration.module.rules.push(
         loader: 'css-loader',
         options: {
           modules: true,
-          //importLoaders: 2,
+          importLoaders: 2,
           sourceMap: true,
         }
       },
@@ -25,9 +22,6 @@ configuration.module.rules.push(
         loader: 'postcss-loader',
         options: {
           sourceMap: true,
-          // config: {
-          //   path: 'postcss.config.js',
-          // },
         }
       },
       {
@@ -58,7 +52,7 @@ configuration.module.rules.push(
         loader : 'css-loader',
         options: {
           modules: true,
-          //importLoaders: 1,
+          importLoaders: 1,
           sourceMap: true
         }
       },

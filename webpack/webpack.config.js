@@ -6,16 +6,8 @@ const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
 
-  // absolute string to the directory that contains the entry files
-  // base directory && absolute path, for resolving entry points and loaders
-  // By default the current directory is used (./webpack/)
   context: rootPath,
 
-  // point to enter the application. point the application starts executing. If an array all items will be executed
-  // A dynamically loaded module is not an entry point.
-  // Simple rule: one entry point per HTML page. SPA: one entry point, MPA: multiple entry points.
-  // If a string or array of strings is passed, the chunk is named main. 
-  // If an object is passed, each key is the name of a chunk, and the value describes the entrypoint for the chunk.
   entry: {
     main: [],
   },
@@ -76,23 +68,18 @@ module.exports = {
           mimetype: 'image/svg+xml'
         }
       },
-      // {
-      //   test: /\.(ttf|eot|woff|woff2)$/,
-      //   use: [
-      //     {
-      //       loader: 'file-loader',
-      //       options: {
-      //         name: '[name].[ext]',
-      //       },
-      //     },
-      //   ]
-      // },
     ]
   },
 
   resolve: {
-    extensions: ['.js', '.jsx',],
+    extensions: ['.json', '.js', '.jsx'],
   },
+
+  // Hides "Entrypoint size exeeds the recommened limit (250kB)" warnings.
+  // https://github.com/webpack/webpack/issues/3486
+  // performance:{
+  //   hints: false
+  // },
 
   plugins: [],
 };

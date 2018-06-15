@@ -16,51 +16,6 @@ const Html = props => {
   console.log('>>>>>> HTML.JS > assets: ', assets);
   console.log('>>>>>> HTML.JS > bundle => bundle: ', bundles.map(bundle => bundle));
 
-  // SERVER OUTPUT BEFORE USING webpack.DllPlugin:
-
-  // DEVELOPMENT -----------------------------------------------------------------------------------------
-  // >>>>>> HTML.JS > Object.keys(assets.styles):  []
-  // >>>>>> HTML.JS > Object.keys(assets.styles).length:  0
-  // >>>>>> HTML.JS > assets.styles:  {}
-  // >>>>>> HTML.JS > assets:  { javascript: 
-  //    { main: 'http://localhost:3001/assets/main.1477b7d5a2530eebb1a3.js',
-  //      vendor: 'http://localhost:3001/assets/vendor.1477b7d5a2530eebb1a3.js',
-  //      'vendors-main': 'http://localhost:3001/assets/vendors-main.3afdb594fc0a4022d7da.js',
-  //      'vendors-main-vendor': 'http://localhost:3001/assets/vendors-main-vendor.fa7ad64be4f3caa2531d.js',
-  //      'vendors-vendor': 'http://localhost:3001/assets/vendors-vendor.558be7861b6e9c645b4b.js' },
-  //   styles: {} }
-
-  // PRODUCTION -------------------------------------------------------------------------------------------
-  // >>>>>> HTML.JS > Object.keys(assets.styles):  [ 'main' ]
-  // >>>>>> HTML.JS > Object.keys(assets.styles).length:  1
-  // >>>>>> HTML.JS > assets.styles:  { main: '/assets/main-741466ca48ed79dc2012.css' }
-  // >>>>>> HTML.JS > assets:  { javascript: 
-  //    { 'vendors-main-vendor': '/assets/vendors-main-vendor.974b806033a7bba944d4.js',
-  //      'vendors-vendor': '/assets/vendors-vendor.7cb9126fcebdcdd7a169.js',
-  //      'vendors-main': '/assets/vendors-main.2385dc9ef36d5746edc2.js',
-  //      vendor: '/assets/vendor.423863f32e02f2f88f2a.js',
-  //      main: '/assets/main.423863f32e02f2f88f2a.js' },
-  //   styles: { main: '/assets/main-741466ca48ed79dc2012.css' } }
-
-
-  // SERVER OUTPUT AFTER USING webpack.DllPlugin:
-
-  // DEVELOPMENT -----------------------------------------------------------------------------------------
-  // >>>>>> HTML.JS > Object.keys(assets.styles):  []
-  // >>>>>> HTML.JS > Object.keys(assets.styles).length:  0
-  // >>>>>> HTML.JS > assets.styles:  {}
-  // >>>>>> HTML.JS > assets:  { javascript:
-  //    { main: 'http://localhost:3001/assets/main.7f61a6be4b116a6181dd.js' },
-  //   styles: {} }
-
-  // PRODUCTION -------------------------------------------------------------------------------------------
-  // >>>>>> HTML.JS > Object.keys(assets.styles):  [ 'main' ]
-  // >>>>>> HTML.JS > Object.keys(assets.styles).length:  1
-  // >>>>>> HTML.JS > assets.styles:  { main: '/assets/main.c247e68a49230868eb80.css' }
-  // >>>>>> HTML.JS > assets:  { javascript: { main: '/assets/main.0e2c37777b0bf217d730.chunk.js' },
-  //   styles: { main: '/assets/main.c247e68a49230868eb80.css' } }
-
-
   return (
 
     <html lang="en-US">
@@ -89,18 +44,6 @@ const Html = props => {
         {head.script.toComponent()}
 
         {/* (>>>>>>> STYLES - will be physically present only in production with 'WETP' || 'MCEP') */}
-        {/* {Object.keys(assets.styles).length > 0 &&
-          Object.keys(assets.styles)
-            .reverse()
-            .map(key => (
-              <link
-                rel="stylesheet"
-                type="text/css"
-                key={key}
-                href={assets.styles[key]}
-              />
-            ))} */}
-
         {assets.styles &&
           Object.keys(assets.styles).map(style => (
             <link
@@ -138,8 +81,8 @@ const Html = props => {
 
         { __DLLS__ && <script key="dlls__vendor" src="/assets/dlls/dll__vendor.js" charSet="UTF-8" /> }
 
-        // It is important that the bundles (loaded modules which have been mapped to bundles) are included before the main bundle,
-        // so that they can be loaded by the browser prior to the app rendering.
+        {/*  It is important that the bundles (loaded modules which have been mapped to bundles) are included before the main bundle,  */}
+        {/*  so that they can be loaded by the browser prior to the app rendering.  */}
         {bundles.map(bundle => bundle && <script src={config.assetsPath + bundle.file} key={bundle.id} />)}
 
         {/* (>>>>>>> JAVASCRIPTS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<) */}
