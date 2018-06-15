@@ -1,0 +1,147 @@
+{
+  "presets": [
+    "react",
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "safari >= 7"],
+        "node": "current",
+      }
+    }],
+    "stage-0"
+  ],
+  "plugins": [
+    "transform-object-rest-spread",
+    "transform-runtime",
+    "add-module-exports",
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "react-loadable/babel",
+    "react-hot-loader/babel",
+  ],
+}
+
+// ------------------------------------------------------------------------------
+
+// Env preset:
+// 
+//   * modules: false (prevents Babel from transpiling import and export statements to ES5 && enables dynamic imports)
+//   * (enables Babel 6 to support ES2015)
+//   * Configure it to only include the polyfills and transforms needed for the browsers you support
+//   * Compiling only what’s needed can make your bundles smaller and your life easier
+//   * (setting module option "false" will not transform ES6 module syntax to another module type (i.e. CommonJS))
+
+// https://reactjs.org/docs/dom-elements.html
+// Plugins run before Presets.
+// Plugin ordering is first to last.
+// Preset ordering is reversed (last to first).
+
+// {
+//   "presets": [
+//     "react",
+//     ["env"],
+//     "stage-0"
+//   ],
+//   "plugins": [
+//     "css-modules-transform", {
+//       "preprocessCss": "./loaders/sassLoader.js",
+//       "generateScopedName": "[name]__[local]__[hash:base64:5]",
+//       "extensions": [".css", ".scss"],
+//     },
+//     "transform-runtime",
+//     "add-module-exports",
+//     "transform-decorators-legacy"
+//   ],
+// }
+
+// @babel/preset-react : 
+//    -----------------------------------------------------------------
+//    Babel preset for all React plugins.
+//    -----------------------------------------------------------------
+//    This preset always includes the following plugins:
+//        @babel/plugin-syntax-jsx
+//        @babel/plugin-transform-react-jsx
+//        @babel/plugin-transform-react-display-name
+//    
+//    And with the development option:
+//        @babel/plugin-transform-react-jsx-self
+//        @babel/plugin-transform-react-jsx-source
+
+
+// @babel/preset-env :
+//    -----------------------------------------------------------------
+//    A Babel preset that compiles ES2015+ down to ES5
+//    by automatically determining the Babel plugins and polyfills you need
+//    based on your targeted browser or runtime environments.
+//
+//    Without any configuration options, @babel/preset-env behaves exactly the same as
+//    @babel/preset-latest (or @babel/preset-es2015, @babel/preset-es2016,
+//    and @babel/preset-es2017 together).
+
+
+// @babel/preset-stage-0 :
+//    -----------------------------------------------------------------
+//    Babel preset for stage 0 plugins.
+//    All you need to use stage 0 (and greater) plugins
+//    -----------------------------------------------------------------
+//    This preset includes the following plugins:
+//    
+//        transform-do-expressions
+//        transform-function-bind
+//    
+//    And all plugins from presets:
+//    
+//        preset-stage-1
+//        preset-stage-2
+//        preset-stage-3
+
+
+// @babel/plugin-transform-runtime
+//    -----------------------------------------------------------------
+//    Externalizes references to helpers and built-ins, automatically polyfilling code without polluting globals.
+//    -----------------------------------------------------------------
+//    Babel uses very small helpers for common functions such as _extend.
+//    By default this will be added to every file that requires it. 
+//    This duplication is sometimes unnecessary, especially when your application is spread out over multiple files.
+//    
+//    This is where the @babel/plugin-transform-runtime plugin comes in: 
+//    all of the helpers will reference the module @babel/runtime to avoid duplication across your compiled output. 
+//    The runtime will be compiled into your build.
+//    
+//    Another purpose of this transformer is to create a sandboxed environment for your code. 
+//    If you use @babel/polyfill and the built-ins it provides such as Promise, Set and Map, 
+//    those will pollute the global scope. While this might be ok for an app or a command line tool, 
+//    it becomes a problem if your code is a library which you intend to publish for others to use 
+//    or if you can't exactly control the environment in which your code will run.
+//    
+//    The transformer will alias these built-ins to core-js so you can use them seamlessly 
+//    without having to require the polyfill.
+
+
+// babel-plugin-add-module-exports
+//    -----------------------------------------------------------------
+//    Babel@6 doesn't export default 'module.exports'
+//    So, in Node, this:    'require('./bundle.js').default'
+//    works coded as this:  'require('./bundle.js')'
+//    -----------------------------------------------------------------
+//    Babel@6 transforms (export default 'foo')
+//
+//    The plugin adds the 'module.exports' only if the 'export default' declaration exists.
+
+
+// babel-plugin-transform-decorators-legacy
+//    -----------------------------------------------------------------
+//    Babel Legacy Decorator plugin
+//    -----------------------------------------------------------------
+//    This is a plugin for Babel 6 that is meant to replicate the old decorator behavior
+//    from Babel 5 in order to allow people to more easily transition to Babel 6 without
+//    needing to be blocked on updates to the decorator proposal or for Babel to re-implement it.
+//
+//    Decorators are still only a relatively new proposal, and they are (at least currently) still in flux. 
+//    Many people have started to use them in their original form, where each decorator is essentially a function of the form
+//
+//    function(target, property, descriptor){}
+//
+//    This form is very likely to change moving forward, and Babel 6 did not wish to support the older form
+//    when it was known that it would change in the future. 
+//    The plugin helps transition to Babel 6 without requiring to drop decorators or requiring
+//    to wait for the new proposal update and then have to update existing code.
