@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "bootstrap-redux-react-loadable-webpack-dllplugin-too",
+  "name": "bootstrap-redux-react-loadable-webpack-dllplugin-three",
   "version": "0.0.1",
-  "description": "App is a continuation of repo bootstrap-redux-react-loadable-webpack-dllplugin.",
+  "description": "App is a continuation of repo bootstrap-redux-react-loadable-webpack-dllplugin-too.",
   "author": "dev",
   "license": "MIT",
   "scripts": {
