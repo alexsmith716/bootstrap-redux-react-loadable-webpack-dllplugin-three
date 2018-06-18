@@ -1,17 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import jsCookie from 'js-cookie';
 
-//import { LOAD } from '../../constants/actionTypes';
-//import { LOAD_SUCCESS } from '../../constants/actionTypes';
-//import { LOAD_FAIL } from '../../constants/actionTypes';
-//import { LOGIN } from '../../constants/actionTypes';
-//import { LOGIN_SUCCESS } from '../../constants/actionTypes';
-//import { LOGIN_FAIL } from '../../constants/actionTypes';
-//import { REGISTER } from '../../constants/actionTypes';
-//import { REGISTER_SUCCESS } from '../../constants/actionTypes';
-//import { REGISTER_FAIL } from '../../constants/actionTypes';
-//import { LOGOUT } from '../../constants/actionTypes';
-
 const LOAD = 'redux-example/auth/LOAD';
 const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/auth/LOAD_FAIL';
@@ -141,7 +130,8 @@ export function loadAuth() {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: async client => {
       const result = await client.post('/api/auth/load');
-      console.log('>>>>>>>>>>>>> Redux > Modules > AUTH.JS > loadAuth() > client.post(/api/auth/load) 2 <<<<<<<<<<<<<<<');
+      // const result = await client.post('/auth/load');
+      console.log('>>>>>>>>>>>>> Redux > Modules > AUTH.JS > loadAuth() > client.post(/api/auth/load) 2 <<<<<<<<<<<<<<<: ', result);
       return result;
     }
   };
@@ -152,6 +142,7 @@ export function register(data) {
     types: [REGISTER, REGISTER_SUCCESS, REGISTER_FAIL],
     promise: async client => {
       const result = client.post('/api/auth/register', { ...data, fullName: 'AuthJSFullName' });
+      // const result = client.post('/auth/register', { ...data, fullName: 'AuthJSFullName' });
       return result;
     }
   };
@@ -163,6 +154,7 @@ export function login(data) {
     promise: async client => {
       try {
         const result = await client.post('/api/auth/login', { ...data, source: 'webapp' });
+        // const result = await client.post('/auth/login', { ...data, source: 'webapp' });
         jsCookie.set('accessToken', result.accessToken);
         return result;
       } catch (error) {

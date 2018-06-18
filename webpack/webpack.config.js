@@ -72,6 +72,7 @@ module.exports = {
   },
 
   resolve: {
+    modules: [ 'client', 'node_modules' ],
     extensions: ['.json', '.js', '.jsx'],
   },
 
