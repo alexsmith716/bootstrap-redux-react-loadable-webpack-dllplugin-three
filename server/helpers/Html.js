@@ -6,15 +6,16 @@ import config from '../config';
 
 // https://reactjs.org/docs/dom-elements.html <<<<<<<<< 'dangerouslySetInnerHTML'
 
-const Html = props => {
-  const { assets, content, store , bundles } = props;
+const Html = ({
+  assets, store, content, bundles
+}) => {
   const head = Helmet.renderStatic();
 
-  console.log('>>>>>> HTML.JS > Object.keys(assets.styles): ', Object.keys(assets.styles));
-  console.log('>>>>>> HTML.JS > Object.keys(assets.styles).length: ', Object.keys(assets.styles).length);
-  console.log('>>>>>> HTML.JS > assets.styles: ', assets.styles);
-  console.log('>>>>>> HTML.JS > assets: ', assets);
-  console.log('>>>>>> HTML.JS > bundle => bundle: ', bundles.map(bundle => bundle));
+  // console.log('>>>>>> HTML.JS > Object.keys(assets.styles): ', Object.keys(assets.styles));
+  // console.log('>>>>>> HTML.JS > Object.keys(assets.styles).length: ', Object.keys(assets.styles).length);
+  // console.log('>>>>>> HTML.JS > assets.styles: ', assets.styles);
+  // console.log('>>>>>> HTML.JS > assets: ', assets);
+  // console.log('>>>>>> HTML.JS > bundle => bundle: ', bundles.map(bundle => bundle));
 
   return (
 
@@ -76,8 +77,8 @@ const Html = props => {
           ></script>
         )}
 
-        { __DLLS__ === true && console.log(">>>>>>>>>>>>>>> YES __DLLS__ <<<<<<<<<<<<<<<<<<") }
-        { __DLLS__ !== true && console.log(">>>>>>>>>>>>>>> NO __DLLS__ <<<<<<<<<<<<<<<<<<") }
+        {/*  { __DLLS__ === true && console.log(">>>>>>>>>>>>>>> YES __DLLS__ <<<<<<<<<<<<<<<<<<") } */}
+        {/*  { __DLLS__ !== true && console.log(">>>>>>>>>>>>>>> NO __DLLS__ <<<<<<<<<<<<<<<<<<") } */}
 
         { __DLLS__ && <script key="dlls__vendor" src="/assets/dlls/dll__vendor.js" charSet="UTF-8" /> }
 

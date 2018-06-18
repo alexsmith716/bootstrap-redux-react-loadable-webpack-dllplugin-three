@@ -8,11 +8,13 @@ const Visualizer = require('webpack-visualizer-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const { clientConfiguration } = require('universal-webpack');
 const settings = require('./universal-webpack-settings');
 //const base_configuration = require('./webpack.config');
 const configuration = require('./webpack.config');
+const rootPath = path.resolve(__dirname, '..');
 
 // extracted CSS based on the entry
 // extract CSS imported by dynamically imported async routes
@@ -213,35 +215,41 @@ configuration.plugins.push(
     Util: "exports-loader?Util!bootstrap/js/dist/util",
   }),
 
-  new UglifyJsPlugin({
-    cache: false,      // Enable file caching (default: false)
-    parallel: true,   // Use multi-process parallel running to improve the build speed (default: false)
-    sourceMap: true, // Use source maps to map error message locations to modules (default: false)
-    extractComments: false, // Whether comments shall be extracted to a separate file (default: false)
-    uglifyOptions: {
-      ecma: 8, // Supported ECMAScript Version (default undefined)
-      warnings: false, // Display Warnings (default false)
-      mangle: true, // Enable Name Mangling (default true)
-      compress: {
-        passes: 1,  // The maximum number of times to run compress (default: 1)
-      },
-      output: {
-        beautify: false, // whether to actually beautify the output (default true)
-        comments: false, // true or "all" to preserve all comments, "some" to preserve some (default false)
-      },
-      ie8: false, // Enable IE8 Support (default false)
-      safari10: false, // Enable work around Safari 10/11 bugs in loop scoping and await (default false)
-    }
-  }),
+  new UglifyJsPlugin(),
+  // new UglifyJsPlugin({
+  //   cache: false,      // Enable file caching (default: false)
+  //   parallel: false,   // Use multi-process parallel running to improve the build speed (default: false)
+  //   sourceMap: false, // Use source maps to map error message locations to modules (default: false)
+  //   extractComments: false, // Whether comments shall be extracted to a separate file (default: false)
+  //   uglifyOptions: {
+  //     ecma: 8, // Supported ECMAScript Version (default undefined)
+  //     warnings: false, // Display Warnings (default false)
+  //     mangle: true, // Enable Name Mangling (default true)
+  //     compress: {
+  //       passes: 1,  // The maximum number of times to run compress (default: 1)
+  //     },
+  //     output: {
+  //       beautify: true, // whether to actually beautify the output (default true)
+  //       comments: false, // true or "all" to preserve all comments, "some" to preserve some (default false)
+  //     },
+  //     ie8: false, // Enable IE8 Support (default false)
+  //     safari10: false, // Enable work around Safari 10/11 bugs in loop scoping and await (default false)
+  //   }
+  // }),
 
-  new OptimizeCSSAssetsPlugin({
-    cssProcessor: require('cssnano'), // cssnano >>> default optimize \ minimize css processor 
-    cssProcessorOptions: { discardComments: { removeAll: true } }, // defaults to {}
-    canPrint: true, // indicating if the plugin can print messages to the console (default true)
-  }),
+  // new OptimizeCSSAssetsPlugin({
+  //   cssProcessor: require('cssnano'), // cssnano >>> default optimize \ minimize css processor 
+  //   cssProcessorOptions: { discardComments: { removeAll: true } }, // defaults to {}
+  //   canPrint: true, // indicating if the plugin can print messages to the console (default true)
+  // }),
 
   new ReactLoadablePlugin({
     filename: path.join(configuration.output.path, 'loadable-chunks.json')
+  }),
+
+  new HtmlWebpackPlugin({
+    filename: 'index.html',
+    template: path.join(rootPath, './server/navigateFallback.js'),
   }),
 
   new SWPrecacheWebpackPlugin({
@@ -256,12 +264,10 @@ configuration.plugins.push(
 
     directoryIndex: '/',
     verbose: true,
-    // navigateFallback: '/index.html'
+    navigateFallback: './index.html',
   }),
 
-  // https://blog.etleap.com/2017/02/02/inspecting-your-webpack-bundle/
   new Visualizer({
-    // Relative to the output folder
     filename: '../../analyzers/visualizer/bundle-stats.html'
   }),
 
@@ -274,12 +280,10 @@ configuration.plugins.push(
     openAnalyzer: false,
     generateStatsFile: false
   }),
-
 );
 
-console.log('>>>>>>>>>>>>>>>>>>> WCCPB CLIENT configuration 1: ', configuration)
+// console.log('>>>>>>>>>>>>>>>>>>> WCCPB CLIENT configuration: ', configuration)
 const configurationClient = clientConfiguration(configuration, settings)
-
-console.log('>>>>>>>>>>>>>>>>>>> WCCPB CLIENT configurationClient 2: ', configurationClient)
+// console.log('>>>>>>>>>>>>>>>>>>> WCCPB CLIENT configurationClient: ', configurationClient)
 
 export default configurationClient;

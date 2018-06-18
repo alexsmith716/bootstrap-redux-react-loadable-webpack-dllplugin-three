@@ -120,19 +120,19 @@ export default function (parameters) {
   const port = 3000;
   app.set('port', port);
 
-  app.use((req, res, next) => {
-    console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.ip +++++++++++++: ', req.ip);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.method +++++++++: ', req.method);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.url ++++++++++++: ', req.url);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.headers ++++++++: ', req.headers);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.session ++++++++: ', req.session);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.params +++++++++: ', req.params);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.originalUrl ++++: ', req.originalUrl);
-    // console.log('>>>>>>>>>>>>>>>>> SERVER > process.env.SESSION_SECRET ++++: ', process.env.SESSION_SECRET);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN < $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-    return next();
-  });
+  // app.use((req, res, next) => {
+  //   console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+  //   console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.ip +++++++++++++: ', req.ip);
+  //   console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.method +++++++++: ', req.method);
+  //   console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.url ++++++++++++: ', req.url);
+  //   console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.headers ++++++++: ', req.headers);
+  //   console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.session ++++++++: ', req.session);
+  //   console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.params +++++++++: ', req.params);
+  //   console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.originalUrl ++++: ', req.originalUrl);
+  //   // console.log('>>>>>>>>>>>>>>>>> SERVER > process.env.SESSION_SECRET ++++: ', process.env.SESSION_SECRET);
+  //   console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN < $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+  //   return next();
+  // });
 
   app.use(morgan('dev'));
   app.use(helmet());
@@ -162,6 +162,7 @@ export default function (parameters) {
   // #########################################################################
 
   app.use('/service-worker.js', (req, res, next) => {
+    console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ service-worker $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
     res.setHeader('Service-Worker-Allowed', '/');
     res.setHeader('Cache-Control', 'no-store');
     return next();
