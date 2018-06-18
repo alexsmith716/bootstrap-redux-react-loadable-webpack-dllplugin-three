@@ -21,7 +21,7 @@ export default function apiClient(req) {
   instance.interceptors.request.use(
     conf => {
 
-      console.log('> ApiClient.JS || AXIOS > instance.interceptors.request.use > $$$$$$ req.headers $$$$$: ', req.headers);
+      // console.log('> ApiClient.JS || AXIOS > instance.interceptors.request.use > $$$$$$ req.headers $$$$$: ', req.headers);
 
       if (__SERVER__) {
         console.log('> ApiClient.JS || AXIOS > instance.interceptors.request.use1 > ######## SERVER #######');
@@ -40,7 +40,7 @@ export default function apiClient(req) {
 
       }
 
-      console.log('> ApiClient.JS || AXIOS > instance.interceptors.request ######## return conf #######: ', conf);
+      // console.log('> ApiClient.JS || AXIOS > instance.interceptors.request ######## return conf #######: ', conf);
       return conf;
     },
     error => {
