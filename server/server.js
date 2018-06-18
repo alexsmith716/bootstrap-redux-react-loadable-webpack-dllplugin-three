@@ -121,7 +121,7 @@ export default function (parameters) {
   app.set('port', port);
 
   app.use((req, res, next) => {
-    console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+    console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.ip +++++++++++++: ', req.ip);
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.method +++++++++: ', req.method);
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.url ++++++++++++: ', req.url);
@@ -136,8 +136,9 @@ export default function (parameters) {
 
   app.use(morgan('dev'));
   app.use(helmet());
-  //app.use(cors());
-  app.use(headers);
+  app.use(helmet.xssFilter());
+  app.use(cors());
+  // app.use(headers);
 
   // #########################################################################
 
@@ -147,8 +148,11 @@ export default function (parameters) {
 
   // #########################################################################
 
-  app.use(bodyParser.json({ limit: '20mb' }));
+  //app.use(express.json());
+  //app.use(express.urlencoded());
+
   app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
+  app.use(bodyParser.json({ limit: '20mb' }));
   app.use(cookieParser());
   app.use(compression());
   app.use('/assets', express.static(path.join(__dirname, '../public/assets')));
@@ -332,7 +336,7 @@ export default function (parameters) {
       console.log('>>>>>>>>>>>>>>>> server.js > Express server Connected: ', server.address());
     });
 
-    server.on('error', (err) => {
+    server.on('error', (err, req, res) => {
 
       if (err.syscall !== 'listen') {
         console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ', err);
@@ -351,9 +355,23 @@ export default function (parameters) {
           console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' is already in use');
           process.exit(1);
           break;
+        case 'ECONNRESET':
+          console.log('>>>>>>>>>>>>>>>> server.js > Express proxy error +++++++++++++++++++++');
+          process.exit(1);
+          break;
         default:
           console.log('>>>>>>>>>>>>>>>> server.js > Express server error.code: ', err.code);
       }
+
+      if (!res.headersSent) {
+        console.log('>>>>>>>>>>>>>>>> server.js > Express error > !res.headersSent: ', res.headersSent);
+        // res.writeHead(500, { 'content-type': 'application/json' });
+      }
+      // const json = {
+      //   error: 'proxy_error',
+      //   reason: error.message
+      // };
+      // res.end(JSON.stringify(json));
     });
 
     server.on('listening', () => {

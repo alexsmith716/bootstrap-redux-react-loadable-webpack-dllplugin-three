@@ -49,6 +49,7 @@ export function load() {
     promise: client => {
       console.log('>>>>>>>>>>>>> Redux > Modules > INFO.JS > load() > client.get(/api/info/load) 2 <<<<<<<<<<<<<<<');
       client.get('/api/info/load');
+      // client.get('/info/load');
     }
   };
 }

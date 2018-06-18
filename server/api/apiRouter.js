@@ -7,7 +7,7 @@ router.use((req, res, next) => {
   console.log('>>>>>>>>>>>>>>>>> ApiRouter.js > REQ.ip +++++++++: ', req.ip);
   console.log('>>>>>>>>>>>>>>>>> ApiRouter.js > REQ.method +++++: ', req.method);
   console.log('>>>>>>>>>>>>>>>>> ApiRouter.js > REQ.url ++++++++: ', req.url);
-  console.log('>>>>>>>>>>>>>>>>> ApiRouter.js > REQ.headers ++++++++ 222z: ', req.headers);
+  console.log('>>>>>>>>>>>>>>>>> ApiRouter.js > REQ.headers ++++: ', req.headers);
   return next();
 });
 
