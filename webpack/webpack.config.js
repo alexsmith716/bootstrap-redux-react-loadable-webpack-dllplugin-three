@@ -2,7 +2,8 @@ const webpack = require('webpack');
 const path = require('path');
 
 const rootPath = path.resolve(__dirname, '..');
-const devMode = process.env.NODE_ENV !== 'production';
+
+console.log('>>>>>>>>>>>>>>> WEBPACK > WEBPACK.CONFIG.JS >  &&&&&&&&& >>>>>>>>>>>>>>>>>>>>: ');
 
 module.exports = {
 

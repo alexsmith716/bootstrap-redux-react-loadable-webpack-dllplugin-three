@@ -12,39 +12,19 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const { clientConfiguration } = require('universal-webpack');
 const settings = require('./universal-webpack-settings');
-//const base_configuration = require('./webpack.config');
 const configuration = require('./webpack.config');
 const rootPath = path.resolve(__dirname, '..');
 
-// extracted CSS based on the entry
-// extract CSS imported by dynamically imported async routes
-// async loading / async chunking
-
-// Mapping loaded modules to bundles ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// In order to make sure that the client loads all the modules that were rendered server-side, 
-// we'll need to map them to the bundles that Webpack created.
-// This comes in two parts.
-
-// First we need Webpack to tell us which bundles each module lives inside. 
-// For this there is the React Loadable Webpack plugin.
-
-// Import the ReactLoadablePlugin from react-loadable/webpack and include it in your webpack config. 
 const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
-// Pass it a filename for where to store the JSON data about our bundles:
-// new ReactLoadablePlugin({ filename: 'loadable-chunks.json' })
-// Then we'll go back to our server and use this data to convert our modules to bundles.
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 const bundleAnalyzerPath = path.resolve(configuration.context, './build/analyzers/bundleAnalyzer');
 const visualizerPath = path.resolve(configuration.context, './build/analyzers/visualizer');
 const assetsPath = path.resolve(configuration.context, './build/public/assets');
 const serverPath = path.resolve(configuration.context, './build/server');
 
-const groupsOptions = {minSize: 0, minChunks: 1, reuseExistingChunk: true, enforce: true};
-
 configuration.mode = 'production';
 
-configuration.devtool = 'source-map';
+// configuration.devtool = 'source-map';
 // configuration.devtool = 'hidden-source-map';
 
 configuration.stats = {
@@ -58,8 +38,6 @@ configuration.entry.main.push(
   './client/index.js',
 );
 
-// configuration.output.filename = '[name].[hash].bundle.js';
-// configuration.output.chunkFilename = '[name].[hash].chunk.js';
 configuration.output.filename = '[name].[chunkhash].bundle.js';
 configuration.output.chunkFilename = '[name].[chunkhash].chunk.js';
 
@@ -73,21 +51,21 @@ configuration.module.rules.push(
         options: {
           modules: true,
           importLoaders: 2,
-          sourceMap: true,
+          // sourceMap: true,
         }
       },
       {
         loader: 'postcss-loader',
         options: {
-          sourceMap: true,
+          // sourceMap: true,
         }
       },
       {
         loader: 'sass-loader',
         options: {
           outputStyle: 'expanded',
-          sourceMap: true,
-          sourceMapContents: true
+          // sourceMap: true,
+          // sourceMapContents: true
         }
       },
       {
@@ -109,7 +87,7 @@ configuration.module.rules.push(
         options: {
           modules: true,
           importLoaders: 1,
-          sourceMap: true,
+          // sourceMap: true,
         }
       },
       {
@@ -120,16 +98,39 @@ configuration.module.rules.push(
 );
 
 configuration.optimization = {
-  splitChunks: {
-    cacheGroups: {
-      styles: {
-        name: 'main',
-        test: /\.(sa|sc|c)ss$/,
-        chunks: 'all',
-        enforce: true,
-      },
-    },
-  },
+  // occurrenceOrder: true,
+  // minimize: true,
+  // splitChunks: {
+  //   chunks: 'all',
+  //   // cacheGroups: {
+  //   //   styles: {
+  //   //     name: 'main',
+  //   //     test: /\.(sa|sc|c)ss$/,
+  //   //     chunks: 'all',
+  //   //     enforce: true,
+  //   //   },
+  //   // },
+  // },
+  // splitChunks: {
+  //   cacheGroups: {
+  //     vendor: {
+  //       test: /node_modules\//,
+  //       priority: 10,
+  //       enforce: true
+  //     },
+  //     commons: {
+  //       test:'../client',
+  //       name: 'common',
+  //       minSize:30000,
+  //       minChunks:2,
+  //       priority: 10,
+  //       enforce: true
+  //     }
+  //   },
+  //   // chunks: 'all',
+  //   // chunks: 'initial',
+  // },
+  // runtimeChunk: true
 };
 // configuration.optimization = {
 //   splitChunks: {
@@ -139,18 +140,9 @@ configuration.optimization = {
 //         name: 'vendor',
 //         chunks: 'initial',
 //       },
-//       // styles: {
-//       //   name: 'main',
-//       //   test: /\.(sa|sc|c)ss$/,
-//       //   chunks: 'all',
-//       //   enforce: true,
-//       // },
 //     },
 //     // chunks: 'initial',
 //   },
-//   // Manifest: how webpack manages the interaction between all modules
-//   // Using manifest, runtime is able to find where to retrieve the modules behind the identifiers
-//   // extracted into its own chunk
 //   runtimeChunk: {
 //     name: 'manifest',
 //   },
@@ -174,27 +166,10 @@ configuration.plugins.push(
     __DLLS__: false,
   }),
 
-  // [Hashes] - Enable Long Term Caching
-
-  // [hash]:
-  //    - Returns the build hash. If any portion of the build changes, this changes as well.
-
-  // [chunkhash]:
-  //    - Returns an entry chunk-specific hash. 
-  //    - Each `entry` defined in the configuration receives a hash of its own. 
-  //    - If any portion of the entry changes, the hash will change as well.
-
-  // [contenthash]:
-  //    - Returns a hash specific to content
-  //    - Calculated by extracted content not by full chunk content
-  //    - If you used `chunkhash` for the extracted CSS as well, this would lead to problems ...
-  //    -   ... as the code points to the CSS through JavaScript bringing it to the same entry. 
-  //    - That means if the application code or CSS changed, it would invalidate both.
-  //    - Therefore, instead of `chunkhash`, `contenthash` is generated based on the extracted content
-
   new MiniCssExtractPlugin({
+    // filename: '[name].css',
     filename: '[name].[contenthash].css',
-    // chunkFilename: '[name].[contenthash].css',
+    // chunkFilename: '[name].[contenthash].chunk.css',
   }),
 
   new webpack.ProvidePlugin({
@@ -257,7 +232,6 @@ configuration.plugins.push(
     filename: 'service-worker.js',
     maximumFileSizeToCacheInBytes: 8388608,
 
-    // Ensure all static, local assets are cached
     staticFileGlobs: [path.dirname(configuration.output.path) + '/**/*.{js,html,css,png,jpg,gif,svg,eot,ttf,woff,woff2}'],
     // staticFileGlobsIgnorePatterns: [/\.map$/, /\.json$/],
     stripPrefix: path.dirname(configuration.output.path),

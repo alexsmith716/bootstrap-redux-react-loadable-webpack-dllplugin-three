@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-//import LoginForm from '../../components/LoginForm/LoginForm';
+import LoginForm from '../../components/LoginForm/LoginForm';
 import * as authActions from '../../redux/modules/auth';
 import * as notifActions from '../../redux/modules/notifs';
-// import GithubLogin from 'components/GithubLogin/GithubLogin';
-//import FacebookLogin from '../../components/FacebookLogin/FacebookLogin';
+import FacebookLogin from '../../components/FacebookLogin/FacebookLogin';
 
-// const styles = require('./scss/Login.scss');
-// const googleIcon = require('../../components/GoogleLogin/images/icon-google.png');
+// <p>You are currently logged in as {user.email}.</p>
 
 @connect(state => ({ user: state.auth.user }), { ...notifActions, ...authActions })
+@withRouter
 
 export default class Login extends Component {
 
@@ -21,6 +20,7 @@ export default class Login extends Component {
     login: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
     notifSend: PropTypes.func.isRequired,
+    history: PropTypes.objectOf(PropTypes.any).isRequired
   };
 
   static defaultProps = {
@@ -31,11 +31,11 @@ export default class Login extends Component {
     if (err) return;
 
     try {
-      await this.props.login(data);
+      await this.props.login('facebook', data);
       this.successLogin();
     } catch (error) {
       if (error.message === 'Incomplete oauth registration') {
-        this.context.router.push({
+        this.props.history.push({
           pathname: '/register',
           state: { oauth: error.data }
         });
@@ -45,7 +45,7 @@ export default class Login extends Component {
     }
   };
 
-  login = async data => {
+  onLocalLogin = async data => {
     const result = await this.props.login('local', data);
     this.successLogin();
     return result;
@@ -61,7 +61,8 @@ export default class Login extends Component {
 
   FacebookLoginButton = ({ facebookLogin }) => (
     <div>
-      <a href="#"  onClick={facebookLogin}>
+      <a href="#" className="m-b-10 d-flex justify-content-center align-items-center button-facebook" onClick={facebookLogin}>
+        <i className="fa fa-facebook-official"></i>
         Facebook
       </a>
     </div>
@@ -76,34 +77,44 @@ export default class Login extends Component {
 
     return (
 
-      <div>
+      <div className="container">
 
-        <div>
+        <div className={styles.loginContainer}>
 
           <Helmet title="Login" />  
 
           {!user && (
 
-            <div>
+            <div className="d-flex justify-content-center">
 
-              <div>
+              <div className={styles.login}>
 
-                <div>
+                <div className={`mb-3 ${styles.formTitle}`}>
                   <p>
                     Sign in to Election App
                   </p>
                 </div>
 
-                <div>
+                <div className={styles.formContainer}>
 
-                  <div>
+                  <LoginForm onSubmit={this.onLocalLogin} />
+
+                  <div className={`mt-3 mb-3 ${styles.signInWith}`}>
                     <p>Or sign in with</p>
                   </div>
 
-                  <div>
+                  <div className="d-flex justify-content-between">
+
+                    <FacebookLogin
+                      appId="35353454535454354"
+                      /* autoLoad={true} */
+                      fields="name,email,picture"
+                      onLogin={this.onFacebookLogin}
+                      component={this.FacebookLoginButton}
+                    />
 
                     <div>
-                      <a href="#">
+                      <a href="#" className="m-b-10 d-flex justify-content-center align-items-center button-google">
                         <img src={googleIcon} alt="Google Login" />
                         Google
                       </a>
@@ -113,7 +124,7 @@ export default class Login extends Component {
 
                 </div>
 
-                <div>
+                <div className={`mt-4 d-flex justify-content-center ${styles.createAccount}`}>
                   <div>
                     Not a member?
                     <a href="/join?source=login">Create an account</a>.
@@ -133,8 +144,8 @@ export default class Login extends Component {
               <div>You are currently logged in as Elmer Fudddd. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</div>
 
               <div>
-                <button onClick={logout}>
-                  Log Out
+                <button className="btn btn-danger" onClick={logout}>
+                  <i className="fa fa-sign-out" /> Log Out
                 </button>
               </div>
             </div>
@@ -142,7 +153,9 @@ export default class Login extends Component {
           )}
 
         </div>
+
       </div>
+
     );
   }
 };

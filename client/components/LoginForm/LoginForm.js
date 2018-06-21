@@ -9,7 +9,7 @@ const Input = ({
   input, label, type, meta: { touched, error, submitError }, ...rest
 }) => (
 
-  <div>
+  <div className={`form-group ${(error || submitError) && touched ? 'has-error' : ''}`}>
 
     {label === 'Email' && (
 
@@ -18,7 +18,7 @@ const Input = ({
 
     {label === 'Password' && (
 
-      <div>
+      <div className="d-flex justify-content-between">
 
         <label htmlFor={input.name}>
           {label}
@@ -31,15 +31,15 @@ const Input = ({
       </div>
     )}
 
-    <div>
+    <div className={input}>
 
-      <input {...input} {...rest} type={type} />
+      <input {...input} {...rest} type={type} className="form-control" />
 
-      {(error || submitError) && touched && <span />}
+      {(error || submitError) && touched && <span className="glyphicon glyphicon-remove form-control-feedback" />}
 
       {(error || submitError) &&
         touched && (
-        <div>
+        <div className="text-danger">
           <strong>{error || submitError}</strong>
         </div>
       )}
@@ -60,28 +60,29 @@ const LoginForm = ({ onSubmit }) => (
   <Form
 
     onSubmit={values => onSubmit(values).then(() => {}, err => err)}
+
     validate={loginValidation}
 
     render={({ handleSubmit, submitError }) => (
 
       <form onSubmit={handleSubmit}>
 
-        <div>
+        <div className="form-group">
           <Field name="email" type="text" component={Input} label="Email" />
         </div>
 
-        <div>
+        <div className="form-group">
           <Field name="password" type="password" component={Input} label="Password" />
         </div>
 
         {submitError && (
-          <p>
+          <p className="text-danger">
             <strong>{submitError}</strong>
           </p>
         )}
 
-        <div>
-          <a href="index.html">Sign in</a>
+        <div className="d-flex justify-content-center">
+          <a className="btn btn-success btn-width-fifty-percent" href="index.html">Sign in</a>
         </div>
 
       </form>
@@ -89,9 +90,8 @@ const LoginForm = ({ onSubmit }) => (
   />
 );
 
-
 LoginForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default LoginForm;
