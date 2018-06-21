@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { provideHooks } from 'redial';
+// import { provideHooks } from 'redial';
 // import MiniInfoBar from 'components/MiniInfoBar/MiniInfoBar';
 // import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 
@@ -17,12 +17,13 @@ export default class AboutThree extends Component {
     const { showKitten } = this.state;
     const aboutImageMain = require('./images/about-750-450.png');
     const aboutImageOurCustomers = require('./images/about-500-300.png');
+    const styles = require('./scss/AboutThree.scss');
 
     return (
 
       <div className="container">
 
-        <h1 className="mt-4 mb-3">AboutThree Too</h1>
+        <h1 className={`mt-4 mb-3 ${styles.aboutThreeUniqueColor}`}>About Three</h1>
 
         <div className="row">
           <div className="col-lg-6">

@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import config from '../config';
 
 // https://reactjs.org/docs/dom-elements.html <<<<<<<<< 'dangerouslySetInnerHTML'
+//         {/* {assets.javascript && <script src={assets.javascript.main} charSet="UTF-8" />} */}
 
 const Html = ({
   assets, store, content, bundles
@@ -75,15 +76,18 @@ const Html = ({
 
         { __DLLS__ && <script key="dlls__vendor" src="/assets/dlls/dll__vendor.js" charSet="UTF-8" /> }
 
+        {assets.javascript && <script src={assets.javascript.manifest} charSet="UTF-8" />}
+
         {bundles.map(bundle => bundle && <script src={config.assetsPath + bundle.file} key={bundle.id} />)}
 
         {/* (>>>>>>> JAVASCRIPTS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<) */}
+        {assets.javascript && <script src={assets.javascript['vendors.main']} charSet="UTF-8" />}
         {assets.javascript && <script src={assets.javascript.main} charSet="UTF-8" />}
 
-        {/*  {Object.keys(assets.javascript).length > 0 &&
+        {/* {Object.keys(assets.javascript).length > 0 &&
           Object.keys(assets.javascript)
             .reverse()
-            .map(key => <script key={key} src={assets.javascript[key]} charSet="UTF-8"></script>)} */}
+            .map(key => <script key={key} src={assets.javascript[key]} charSet="UTF-8" ></script>)} */}
 
       </body>
     </html>

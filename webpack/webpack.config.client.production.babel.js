@@ -31,6 +31,7 @@ configuration.stats = {
   // assets: true,
   // cached: true,
   // entrypoints: false,
+  children: false,
 }
 
 configuration.entry.main.push(
@@ -98,19 +99,21 @@ configuration.module.rules.push(
 );
 
 configuration.optimization = {
-  // occurrenceOrder: true,
-  // minimize: true,
-  // splitChunks: {
-  //   chunks: 'all',
-  //   // cacheGroups: {
-  //   //   styles: {
-  //   //     name: 'main',
-  //   //     test: /\.(sa|sc|c)ss$/,
-  //   //     chunks: 'all',
-  //   //     enforce: true,
-  //   //   },
-  //   // },
-  // },
+  splitChunks: {
+    automaticNameDelimiter: '.',
+    chunks: 'all',
+  //   cacheGroups: {
+  //     styles: {
+  //       name: 'main',
+  //       test: /\.(sa|sc|c)ss$/,
+  //       chunks: 'all',
+  //       enforce: true,
+  //     },
+  //   },
+  },
+  runtimeChunk: {
+    name: 'manifest',
+  },
   // splitChunks: {
   //   cacheGroups: {
   //     vendor: {
@@ -156,9 +159,20 @@ configuration.plugins.push(
 
   new CleanWebpackPlugin([bundleAnalyzerPath,visualizerPath,assetsPath,serverPath], { root: configuration.context }),
 
+  new webpack.IgnorePlugin(/\/iconv-loader$/),
+  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
+  // new MiniCssExtractPlugin(),
+  new MiniCssExtractPlugin({
+    //filename: '[name].css',
+    //filename: '[name].[chunkhash].css',
+    //chunkFilename: '[name].[contenthash].css',
+    filename: '[name].[chunkhash].css',
+    chunkFilename: '[name].[contenthash].chunk.css',
+  }),
+
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': '"production"',
-
     __CLIENT__: true,
     __SERVER__: false,
     __DEVELOPMENT__: false,
@@ -166,28 +180,8 @@ configuration.plugins.push(
     __DLLS__: false,
   }),
 
-  new MiniCssExtractPlugin({
-    // filename: '[name].css',
-    filename: '[name].[contenthash].css',
-    // chunkFilename: '[name].[contenthash].chunk.css',
-  }),
-
-  new webpack.ProvidePlugin({
-    $: 'jquery',
-    jQuery: 'jquery',
-    jquery: 'jquery',
-    Popper: ['popper.js', 'default'],
-    Alert: "exports-loader?Alert!bootstrap/js/dist/alert",
-    Button: "exports-loader?Button!bootstrap/js/dist/button",
-    Carousel: "exports-loader?Carousel!bootstrap/js/dist/carousel",
-    Collapse: "exports-loader?Collapse!bootstrap/js/dist/collapse",
-    Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
-    Modal: "exports-loader?Modal!bootstrap/js/dist/modal",
-    Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
-    Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
-    Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
-    Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
-    Util: "exports-loader?Util!bootstrap/js/dist/util",
+  new ReactLoadablePlugin({
+    filename: path.join(configuration.output.path, 'loadable-chunks.json')
   }),
 
   new UglifyJsPlugin(),
@@ -218,8 +212,22 @@ configuration.plugins.push(
   //   canPrint: true, // indicating if the plugin can print messages to the console (default true)
   // }),
 
-  new ReactLoadablePlugin({
-    filename: path.join(configuration.output.path, 'loadable-chunks.json')
+  new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    jquery: 'jquery',
+    Popper: ['popper.js', 'default'],
+    Alert: "exports-loader?Alert!bootstrap/js/dist/alert",
+    Button: "exports-loader?Button!bootstrap/js/dist/button",
+    Carousel: "exports-loader?Carousel!bootstrap/js/dist/carousel",
+    Collapse: "exports-loader?Collapse!bootstrap/js/dist/collapse",
+    Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
+    Modal: "exports-loader?Modal!bootstrap/js/dist/modal",
+    Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
+    Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
+    Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
+    Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
+    Util: "exports-loader?Util!bootstrap/js/dist/util",
   }),
 
   new HtmlWebpackPlugin({

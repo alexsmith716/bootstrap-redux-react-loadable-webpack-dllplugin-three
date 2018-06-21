@@ -39,7 +39,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import { renderRoutes } from 'react-router-config';
 import Loadable from 'react-loadable';
 import { getBundles } from 'react-loadable/webpack';
-import { trigger } from 'redial';
+// import { trigger } from 'redial';
 
 import Html from './helpers/Html';
 import routes from '../client/routes';
@@ -291,17 +291,15 @@ export default function (parameters) {
 
       const bundles = getBundles(getChunks(), modules);
 
-      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > CHUNKS: ', chunks);
-      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > MODULES: ', modules);
-      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > BUNDLES: ', bundles);
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > (webpack-compiled chunks) > CHUNKS: ', chunks);
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > (which modules were rendered) > MODULES : ', modules);
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > (convert rendered modules to bundles) > BUNDLES: ', bundles);
       // console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > content: ', content);
       // console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > store: ', store);
 
       const html = <Html assets={chunks} content={content} store={store} bundles={bundles} />;
 
-      // console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > html: ', html);
-      // console.log('>>>>>>>>>>>>>>> SERVER > SERVER.JS > global.__DLLS__ >>>>>>>>>>>>>>>>>>>>: ', global.__DLLS__);
-      // console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > DID IT !! HTML <<<<<<<<<<<<<<<<<<');
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > DID IT !! res.status(200).send <<<<<<<<<<<<<<<<<<');
 
       //res.status(200).send('SERVER > Response Ended For Testing!!!!!!! Status 200!!!!!!!!!');
       res.status(200).send(`<!doctype html>${ReactDOM.renderToString(html)}`);
