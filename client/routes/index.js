@@ -3,10 +3,6 @@ import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect';
 import locationHelperBuilder from 'redux-auth-wrapper/history4/locationHelper';
 import { App, Home, NotFound } from '../containers';
 
-// import Login from '../containers/Login/Login';
-// import Register from '../containers/Register/Register';
-// import About from '../containers/About/About';
-
 // import Login from '../containers/Login/Loadable';
 // import Register from '../containers/Register/Loadable';
 // import About from '../containers/About/Loadable';
@@ -16,7 +12,6 @@ import AboutOne from '../containers/AboutOne/Loadable';
 import AboutToo from '../containers/AboutToo/Loadable';
 import AboutThree from '../containers/AboutThree/Loadable';
 import AboutFour from '../containers/AboutFour/Loadable';
-//import About from '../containers/About/Loadable';
 
 const locationHelper = locationHelperBuilder({});
 
@@ -43,8 +38,8 @@ const routes = [{
     { path: '/abouttoo', component: AboutToo },
     { path: '/aboutthree', component: AboutThree },
     { path: '/aboutfour', component: AboutFour },
-    //{ path: '/about', component: About },
-    // { path: '/login', component: isNotAuthenticated(Login) },
+    // { path: '/about', component: About },
+    // { path: '/login', component: Login },
     // { path: '/login-success', component: isAuthenticated(LoginSuccess) },
     // { path: '/register', component: isNotAuthenticated(Register) },
     { component: NotFound },

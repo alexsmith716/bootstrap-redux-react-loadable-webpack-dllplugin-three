@@ -1,10 +1,9 @@
-//import { LOAD } from '../../constants/actionTypes';
-//import { LOAD_SUCCESS } from '../../constants/actionTypes';
-//import { LOAD_FAIL } from '../../constants/actionTypes';
 
 const LOAD = 'redux-example/info/LOAD';
 const LOAD_SUCCESS = 'redux-example/info/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/info/LOAD_FAIL';
+
+console.log('>>>>>>>>>>>>> Redux > Modules > INFO.JS > 11 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
 
 const initialState = {
   loaded: false
@@ -37,6 +36,7 @@ export default function info(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
+  console.log('>>>>>>>>>>>>> Redux > Modules > INFO.JS > 22 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
   const il = globalState.info && globalState.info.loaded;
   console.log('>>>>>>>>>>>>> Redux > Modules > INFO.JS > isInfoLoaded ???: ', il);
   return il;

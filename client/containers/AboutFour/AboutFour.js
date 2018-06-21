@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { provideHooks } from 'redial';
+import BasicForm from '../../components/BasicForm/BasicForm';
+// import { provideHooks } from 'redial';
 // import MiniInfoBar from 'components/MiniInfoBar/MiniInfoBar';
 // import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 
@@ -10,19 +11,18 @@ export default class AboutFour extends Component {
     showKitten: false
   };
 
-  // handleToggleKitten = () => this.setState({ showKitten: !this.state.showKitten });
-
   render() {
 
     const { showKitten } = this.state;
     const aboutImageMain = require('./images/about-750-450.png');
     const aboutImageOurCustomers = require('./images/about-500-300.png');
+    const styles = require('./scss/AboutFour.scss');
 
     return (
 
       <div className="container">
 
-        <h1 className="mt-4 mb-3">AboutFour Too</h1>
+        <h1 className={`mt-4 mb-3 ${styles.aboutFourUniqueColor}`}>About Four</h1>
 
         <div className="row">
           <div className="col-lg-6">
