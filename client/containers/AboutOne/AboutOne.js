@@ -23,7 +23,15 @@ export default class AboutOne extends Component {
       <div className="container">
 
         <h1 className={`mt-4 mb-3 ${styles.aboutOneUniqueColor}`}>About One</h1>
-        
+
+        <div className="row">
+          <div className="col-lg-12">
+
+            <BasicForm onSubmit='' />
+
+          </div>
+        </div>
+
         <div className="row">
           <div className="col-lg-6">
             <img className="img-fluid rounded mb-4" src={aboutImageMain} alt="" />
