@@ -45,7 +45,8 @@ console.log('>>>>>>>>>>>>>>>>>>>>>>>> CLIENT.JS > __DEVTOOLS__ !!!!!: ', __DEVTO
   const store = createStore(history, client, data, offlinePersistConfig);
   console.log('>>>>>>>>>>>>>>>>>>> CLIENT.JS > store: ', store);
 
-  const hydrate = _routes => {
+  const hydrate = async _routes => {
+  //const hydrate = _routes => {
     ReactDOM.hydrate(
       <HotEnabler>
         <Provider store={store}>

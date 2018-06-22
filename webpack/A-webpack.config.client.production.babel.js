@@ -22,10 +22,6 @@ const visualizerPath = path.resolve(configuration.context, './build/analyzers/vi
 const assetsPath = path.resolve(configuration.context, './build/public/assets');
 const serverPath = path.resolve(configuration.context, './build/server');
 
-// reuseExistingChunk: allows to reuse existing chunks instead of creating a new one when modules match exactly.
-// Chunks can be configured. There are 3 values possible "initial", "async" and "all". 
-// When configured the optimization only selects initial chunks, on-demand chunks or all chunks.
-
 configuration.mode = 'production';
 
 function recursiveIssuer(m) {
@@ -78,9 +74,10 @@ configuration.module.rules.push(
       {
         loader: 'sass-loader',
         options: {
+          // includePaths: [ path.join('./client/assets/scss/') ],
           // outputStyle: 'expanded',
           // sourceMap: true,
-          // sourceMapContents: true
+          // sourceMapContents: true,
         }
       },
       {
@@ -114,39 +111,65 @@ configuration.module.rules.push(
 
 configuration.optimization = {
   splitChunks: {
-    chunks: 'async',
-    minSize: 30000,
-    minChunks: 1,
-    maxAsyncRequests: 5,
-    maxInitialRequests: 3,
     automaticNameDelimiter: '.',
-    name: true,
-    cacheGroups: {
-      // styles: {
-      //   name: 'main',
-      //   test: (m,c,entry = 'main') => m.constructor.name === 'CssModule' && recursiveIssuer(m) === entry,
-      //   chunks: 'async',
-      //   enforce: true,
-      // },
-      vendor: {
-        name: 'vendor',
-        reuseExistingChunk: true,
-        chunks: chunk => ['main',].includes(chunk.name),
-        test: module => /[\\/]node_modules[\\/]/.test(module.context),
-        minChunks: 1,
-        minSize: 0,
-      },
-      // commons: {
-      //   name: 'commons',
-      // }
-    },
+    chunks: 'all',
+    // cacheGroups: {
+    //   styles: {
+    //     name: 'main',
+    //     test: (m,c,entry = 'main') => m.constructor.name === 'CssModule' && recursiveIssuer(m) === entry,
+    //     chunks: 'all',
+    //     enforce: true
+    //   },
+    //   // styles: {
+    //   //   name: 'main',
+    //   //   test: /\.(sa|sc|c)ss$/,
+    //   //   chunks: 'all',
+    //   //   enforce: true,
+    //   // },
+    // },
   },
+  //runtimeChunk: {
+  //  name: 'manifest',
+  //},
+  // splitChunks: {
+  //   cacheGroups: {
+  //     vendor: {
+  //       test: /node_modules\//,
+  //       priority: 10,
+  //       enforce: true
+  //     },
+  //     commons: {
+  //       test:'../client',
+  //       name: 'common',
+  //       minSize:30000,
+  //       minChunks:2,
+  //       priority: 10,
+  //       enforce: true
+  //     }
+  //   },
+  //   // chunks: 'all',
+  //   // chunks: 'initial',
+  // },
   runtimeChunk: {
     name: 'manifest',
   },
   // runtimeChunk: true
-  // occurrenceOrder: true,
 };
+// configuration.optimization = {
+//   splitChunks: {
+//     cacheGroups: {
+//       commons: {
+//         test: /[\\/]node_modules[\\/]/,
+//         name: 'vendor',
+//         chunks: 'initial',
+//       },
+//     },
+//     // chunks: 'initial',
+//   },
+//   runtimeChunk: {
+//     name: 'manifest',
+//   },
+// };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // PLUGINS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -161,7 +184,8 @@ configuration.plugins.push(
 
   new MiniCssExtractPlugin({
     // filename: '[name].css',
-    filename: '[name].[contenthash].css.css',
+    // filename: '[name].[chunkhash].css',
+    filename: '[name].[contenthash].css',
     // chunkFilename: '[name].[contenthash].chunk.css',
   }),
 
@@ -172,24 +196,6 @@ configuration.plugins.push(
     __DEVELOPMENT__: false,
     __DEVTOOLS__: false,
     __DLLS__: false,
-  }),
-
-  new webpack.ProvidePlugin({
-    $: 'jquery',
-    jQuery: 'jquery',
-    jquery: 'jquery',
-    Popper: ['popper.js', 'default'],
-    Alert: "exports-loader?Alert!bootstrap/js/dist/alert",
-    Button: "exports-loader?Button!bootstrap/js/dist/button",
-    Carousel: "exports-loader?Carousel!bootstrap/js/dist/carousel",
-    Collapse: "exports-loader?Collapse!bootstrap/js/dist/collapse",
-    Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
-    Modal: "exports-loader?Modal!bootstrap/js/dist/modal",
-    Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
-    Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
-    Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
-    Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
-    Util: "exports-loader?Util!bootstrap/js/dist/util",
   }),
 
   new ReactLoadablePlugin({
@@ -223,6 +229,24 @@ configuration.plugins.push(
   //   cssProcessorOptions: { discardComments: { removeAll: true } }, // defaults to {}
   //   canPrint: true, // indicating if the plugin can print messages to the console (default true)
   // }),
+
+  new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    jquery: 'jquery',
+    Popper: ['popper.js', 'default'],
+    Alert: "exports-loader?Alert!bootstrap/js/dist/alert",
+    Button: "exports-loader?Button!bootstrap/js/dist/button",
+    Carousel: "exports-loader?Carousel!bootstrap/js/dist/carousel",
+    Collapse: "exports-loader?Collapse!bootstrap/js/dist/collapse",
+    Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
+    Modal: "exports-loader?Modal!bootstrap/js/dist/modal",
+    Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
+    Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
+    Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
+    Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
+    Util: "exports-loader?Util!bootstrap/js/dist/util",
+  }),
 
   new HtmlWebpackPlugin({
     filename: 'index.html',
