@@ -5,18 +5,7 @@ import Helmet from 'react-helmet';
 import config from '../config';
 
 // https://reactjs.org/docs/dom-elements.html <<<<<<<<< 'dangerouslySetInnerHTML'
-// {/* {assets.javascript && <script src={assets.javascript.main} charSet="UTF-8" />} */}
-// {/* {assets.javascript && <script src={assets.javascript.manifest} charSet="UTF-8" />} */}
-// {/* (>>>>>>> JAVASCRIPTS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<) */}
-// {/* {assets.javascript && <script src={assets.javascript['vendors.main']} charSet="UTF-8" />} */}
-//         {/* (will be present only in development mode) */}
-//         {/* {assets.styles && Object.keys(assets.styles).length === 0 ? (
-//           <style dangerouslySetInnerHTML={{ __html: '#content{display:none}' }} />
-//         ) : null} */}
-// {/* {Object.keys(assets.javascript).length > 0 &&
-//   Object.keys(assets.javascript)
-//     .reverse()
-//     .map(key => <script key={key} src={assets.javascript[key]} charSet="UTF-8" ></script>)} */}
+//         {/* {assets.javascript && <script src={assets.javascript.main} charSet="UTF-8" />} */}
 
 const Html = ({
   assets, store, content, bundles
@@ -65,6 +54,11 @@ const Html = ({
             />
           ))}
 
+        {/* (will be present only in development mode) */}
+        {/* {assets.styles && Object.keys(assets.styles).length === 0 ? (
+          <style dangerouslySetInnerHTML={{ __html: '#content{display:none}' }} />
+        ) : null} */}
+
       </head>
 
       <body>
@@ -80,15 +74,20 @@ const Html = ({
           ></script>
         )}
 
-        {assets.javascript && <script src={assets.javascript.manifest} charSet="UTF-8" />}
-
-        {assets.javascript && <script src={assets.javascript.vendor} charSet="UTF-8" />}
-
         { __DLLS__ && <script key="dlls__vendor" src="/assets/dlls/dll__vendor.js" charSet="UTF-8" /> }
 
+        {assets.javascript && <script src={assets.javascript.manifest} charSet="UTF-8" />}
+
+        {/* (>>>>>>> JAVASCRIPTS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<) */}
+        {assets.javascript && <script src={assets.javascript['vendors.main']} charSet="UTF-8" />}
         {assets.javascript && <script src={assets.javascript.main} charSet="UTF-8" />}
 
         {bundles.map(bundle => bundle && <script src={config.assetsPath + bundle.file} key={bundle.id} />)}
+
+        {/* {Object.keys(assets.javascript).length > 0 &&
+          Object.keys(assets.javascript)
+            .reverse()
+            .map(key => <script key={key} src={assets.javascript[key]} charSet="UTF-8" ></script>)} */}
 
       </body>
     </html>

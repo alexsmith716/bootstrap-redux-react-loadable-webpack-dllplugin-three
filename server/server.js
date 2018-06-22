@@ -297,7 +297,7 @@ export default function (parameters) {
       // console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > content: ', content);
       // console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > store: ', store);
 
-      const html = <Html assets={chunks} content={content} store={store} bundles={bundles} />;
+      const html = <Html assets={chunks} bundles={bundles} content={content} store={store} />;
 
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > DID IT !! res.status(200).send <<<<<<<<<<<<<<<<<<');
 
