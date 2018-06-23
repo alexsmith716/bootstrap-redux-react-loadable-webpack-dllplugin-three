@@ -4,6 +4,8 @@ import serialize from 'serialize-javascript';
 import Helmet from 'react-helmet';
 import config from '../config';
 
+const testCss = /css.css/;
+
 // https://reactjs.org/docs/dom-elements.html <<<<<<<<< 'dangerouslySetInnerHTML'
 // {/* {assets.javascript && <script src={assets.javascript.main} charSet="UTF-8" />} */}
 // {/* {assets.javascript && <script src={assets.javascript.manifest} charSet="UTF-8" />} */}
@@ -88,7 +90,7 @@ const Html = ({
 
         {assets.javascript && <script src={assets.javascript.main} charSet="UTF-8" />}
 
-        {bundles.map(bundle => bundle && <script src={config.assetsPath + bundle.file} key={bundle.id} />)}
+        {bundles.map(bundle => testCss.test(bundle) && bundle && <script src={config.assetsPath + bundle.file} key={bundle.id} />)}
 
       </body>
     </html>
